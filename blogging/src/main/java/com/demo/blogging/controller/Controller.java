@@ -8,6 +8,8 @@ import com.demo.blogging.repository.TagRepository;
 import com.demo.blogging.service.impl.ArticleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -23,9 +25,9 @@ public class Controller {
     private final ArticleServiceImpl articleService;
 
     @PostMapping("/articles/add")
-    public String addArticle(@RequestBody ArticleDTO article) {
+    public ResponseEntity<String> addArticle(@RequestBody ArticleDTO article) {
         articleService.addArticle(article);
-        return "Add new article successfully!";
+        return ResponseEntity.ok("Add new article successfully!");
     }
 
     @GetMapping("/articles")
@@ -44,18 +46,19 @@ public class Controller {
     }
 
     @DeleteMapping("/articles/delete/{id}")
-    public String deleteArticle(@PathVariable Integer id) {
+    public ResponseEntity<String> deleteArticle(@PathVariable Integer id) {
         if (articleService.deleteArticleById(id)) {
-            return "Article deleted...";
+            return ResponseEntity.ok("Article deleted!");
         }
-        return "No article of ID " + id + " was found";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Article of ID " + id + " was not found!");
+
     }
 
     @PutMapping("/articles/change/{id}")
-    public String updateArticle(@PathVariable Integer id, @RequestBody ArticleDTO newArticle) {
+    public ResponseEntity<String> updateArticle(@PathVariable Integer id, @RequestBody ArticleDTO newArticle) {
         if (articleService.updateArticleById(id, newArticle)) {
-            return "Article updated successfully!";
+            return ResponseEntity.ok("Article updated successfully!");
         }
-        return "Article of ID " + id + " does not exist";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Article of ID " + id + " was not found!");
     }
 }
