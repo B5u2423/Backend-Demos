@@ -1,0 +1,41 @@
+name: db-cluster
+
+services:
+  mysql-test:
+    container_name: 'mysql-test'
+    image: 'mysql:latest'
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: sharedb
+      MYSQL_USER: bob
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 4404
+    ports:
+      - "4404:4404"
+    networks:
+      - db-network
+
+  mongo-test:
+    container_name: 'mongo-test'
+    image: 'mongo'
+    restart: unless-stopped
+    ports:
+      - '28018:28018'
+    networks:
+      - db-network
+
+  postgres-test:
+    container_name: postgres-test
+    image: 'postgres'
+    restart: unless-stopped
+    ports:
+      - '5505:5505'
+    environment:
+      POSTGRES_PASSWORD: secret
+    networks:
+      - db-network
+
+networks:
+  db-network:
+    driver: bridge
