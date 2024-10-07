@@ -3,8 +3,6 @@ package com.demo.blogging.controller;
 import com.demo.blogging.dto.ArticleDTO;
 import com.demo.blogging.entity.Article;
 import com.demo.blogging.entity.Tag;
-import com.demo.blogging.repository.ArticleRepository;
-import com.demo.blogging.repository.TagRepository;
 import com.demo.blogging.service.impl.ArticleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +17,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class Controller {
-    private final ArticleRepository articleRepository;
-    private final TagRepository tagRepository;
-
     private final ArticleServiceImpl articleService;
 
     @PostMapping("/articles/add")
@@ -36,8 +31,10 @@ public class Controller {
     }
 
     @GetMapping("/articles/{id}")
-    public Optional<Article> getOneArticle(@PathVariable Integer id) {
-        return articleService.getArticleById(id);
+    public ResponseEntity<Article> getOneArticle(@PathVariable Integer id) {
+        Optional<Article> result = articleService.getArticleById(id);
+        return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+
     }
 
     @GetMapping("/tags")

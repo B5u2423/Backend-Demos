@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: todolist
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:4404/sharedb
+    username: bob
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
