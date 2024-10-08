@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/blogging/")
+@RequestMapping("/api/blogging")
 @RequiredArgsConstructor
 @Slf4j
 public class Controller {
@@ -25,7 +25,7 @@ public class Controller {
         return ResponseEntity.ok("Add new article successfully!");
     }
 
-    @GetMapping("/articles")
+    @GetMapping(value = {"/articles", "/", ""})
     public Iterable<Article> getArticles() {
         return articleService.getAllArticles();
     }
